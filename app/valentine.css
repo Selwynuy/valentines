@@ -537,6 +537,14 @@ p {
   align-items: center;
   gap: 30px;
   padding: 20px;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .confirmation-wrapper {
+    padding: 10px;
+    gap: 20px;
+  }
 }
 
 .confirmation-card {
@@ -545,12 +553,24 @@ p {
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
   max-width: 450px;
   width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
   animation: slideIn 0.6s ease-out;
 }
 
 .confirmation-card:has(.has-suggestion) {
   max-width: max-content;
   width: auto;
+}
+
+/* Mobile override */
+@media (max-width: 768px) {
+  .confirmation-card,
+  .confirmation-card:has(.has-suggestion) {
+    width: 95%;
+    max-width: 95vw;
+    max-height: 85vh;
+  }
 }
 
 @keyframes slideIn {
@@ -576,6 +596,7 @@ p {
   margin-bottom: 8px;
   color: white;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  line-height: 1.2;
 }
 
 .card-subtitle {
@@ -584,6 +605,20 @@ p {
   font-weight: 400;
   margin: 0;
   color: white;
+}
+
+@media (max-width: 768px) {
+  .card-header {
+    padding: 20px 15px;
+  }
+
+  .card-title {
+    font-size: 1.5rem;
+  }
+
+  .card-subtitle {
+    font-size: 0.75rem;
+  }
 }
 
 .card-content-grid {
@@ -627,6 +662,19 @@ p {
   color: var(--accent-color);
   text-align: center;
   margin-bottom: 20px;
+  line-height: 1.3;
+}
+
+@media (max-width: 768px) {
+  .chosen-plan-icon {
+    font-size: 2rem;
+    margin-bottom: 10px;
+  }
+
+  .plan-title {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+  }
 }
 
 .card-details {
@@ -649,6 +697,19 @@ p {
   font-size: 1.3rem;
   min-width: 35px;
   text-align: center;
+  flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+  .card-detail-item {
+    padding: 10px;
+    gap: 10px;
+  }
+
+  .card-icon {
+    font-size: 1.1rem;
+    min-width: 30px;
+  }
 }
 
 .card-detail-text {
@@ -669,6 +730,17 @@ p {
   font-size: 0.9rem;
   font-weight: 500;
   color: #333;
+  word-break: break-word;
+}
+
+@media (max-width: 768px) {
+  .detail-label-small {
+    font-size: 0.6rem;
+  }
+
+  .detail-value {
+    font-size: 0.85rem;
+  }
 }
 
 .card-note {
@@ -685,6 +757,17 @@ p {
   color: #590d22;
   margin: 0;
   line-height: 1.5;
+  word-break: break-word;
+}
+
+@media (max-width: 768px) {
+  .card-note {
+    padding: 12px;
+  }
+
+  .card-note p {
+    font-size: 0.85rem;
+  }
 }
 
 .suggestion-btn {
@@ -794,6 +877,12 @@ p {
   animation: slideDown 0.3s ease-out;
 }
 
+@media (max-width: 768px) {
+  .user-suggestion {
+    padding: 12px;
+  }
+}
+
 .suggestion-header {
   display: flex;
   justify-content: space-between;
@@ -829,6 +918,14 @@ p {
   color: #1f8a37;
   margin: 0;
   line-height: 1.5;
+  word-break: break-word;
+}
+
+@media (max-width: 768px) {
+  .user-suggestion p,
+  .user-suggestion-preview p {
+    font-size: 0.85rem;
+  }
 }
 
 .hearts-decoration {
@@ -836,6 +933,13 @@ p {
   font-size: 1.2rem;
   opacity: 0.8;
   animation: float 3s ease-in-out infinite;
+  margin-top: 10px;
+}
+
+@media (max-width: 768px) {
+  .hearts-decoration {
+    font-size: 1rem;
+  }
 }
 
 @keyframes float {
@@ -892,14 +996,19 @@ p {
   .card-content-grid.has-suggestion {
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    padding: 20px;
+    gap: 15px;
+    padding: 15px;
   }
 
   .card-left-column,
   .card-content-grid.has-suggestion .card-left-column {
     min-width: unset;
   }
+
+  .card-details {
+    gap: 10px;
+  }
+}
 
   .action-buttons {
     flex-direction: column;

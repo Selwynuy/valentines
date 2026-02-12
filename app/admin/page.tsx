@@ -17,6 +17,7 @@ interface Response {
 export default function AdminPage() {
   const [responses, setResponses] = useState<Response[]>([]);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -24,6 +25,10 @@ export default function AdminPage() {
   }, []);
 
   const fetchResponses = async () => {
+    if (responses.length > 0) {
+      setRefreshing(true);
+    }
+    
     try {
       const response = await fetch('/api/get-responses');
       const data = await response.json();
@@ -37,6 +42,7 @@ export default function AdminPage() {
       setError('Failed to fetch responses');
     } finally {
       setLoading(false);
+      setRefreshing(false);
     }
   };
 
@@ -76,21 +82,36 @@ export default function AdminPage() {
                 </span>
               </div>
 
-              {response.chosen_plan_title && (
-                <div className="response-detail">
-                  <strong>📅 Chosen Plan:</strong>
-                  <p>{response.chosen_plan_title}</p>
-                </div>
-              )}
+              <div className="response-details-grid">
+                {response.chosen_plan_id && (
+                  <div className="response-detail">
+                    <strong>📅 Plan ID:</strong>
+                    <p>#{response.chosen_plan_id}</p>
+                  </div>
+                )}
 
-              {response.suggestions && (
-                <div className="response-detail">
-                  <strong>💡 Her Suggestions:</strong>
-                  <p className="suggestions-text">{response.suggestions}</p>
-                </div>
-              )}
+                {response.chosen_plan_title && (
+                  <div className="response-detail">
+                    <strong>🎯 Plan Name:</strong>
+                    <p className="plan-name">{response.chosen_plan_title}</p>
+                  </div>
+                )}
+
+                {response.suggestions ? (
+                  <div className="response-detail full-width">
+                    <strong>💡 Her Suggestions:</strong>
+                    <p className="suggestions-text">{response.suggestions}</p>
+                  </div>
+                ) : (
+                  <div className="response-detail full-width">
+                    <strong>💡 Her Suggestions:</strong>
+                    <p className="no-suggestions">No suggestions added</p>
+                  </div>
+                )}
+              </div>
 
               <div className="response-meta">
+                <small>Device: {response.user_agent?.substring(0, 50)}...</small>
                 <small>IP: {response.ip_address}</small>
               </div>
             </div>
@@ -99,8 +120,12 @@ export default function AdminPage() {
       )}
 
       <div className="refresh-section">
-        <button onClick={fetchResponses} className="refresh-btn">
-          🔄 Refresh
+        <button 
+          onClick={fetchResponses} 
+          className={`refresh-btn ${refreshing ? 'refreshing' : ''}`}
+          disabled={refreshing}
+        >
+          {refreshing ? '🔄 Refreshing...' : '🔄 Refresh'}
         </button>
       </div>
     </div>
