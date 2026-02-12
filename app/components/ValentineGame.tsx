@@ -148,6 +148,7 @@ export default function ValentineGame() {
   const [showCountdown, setShowCountdown] = useState<boolean>(false);
   const [showSuggestionBox, setShowSuggestionBox] = useState<boolean>(false);
   const [suggestion, setSuggestion] = useState<string>('');
+  const [musicStarted, setMusicStarted] = useState<boolean>(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const WIN_SCORE = 15;
 
@@ -308,6 +309,12 @@ export default function ValentineGame() {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
+    // Start music on user interaction
+    if (audioRef.current && !musicStarted) {
+      audioRef.current.play().catch(err => console.log('Audio play failed:', err));
+      setMusicStarted(true);
+    }
+
     playerRef.current = new Player(canvas.width, canvas.height);
     heartsRef.current = [];
     particlesRef.current = [];
@@ -448,9 +455,9 @@ export default function ValentineGame() {
 
       <div className={`screen ${gameState === 'START' ? 'active' : 'hidden'}`}>
         <h1>Catch the Love!</h1>
-        <p>Catch enough hearts to reveal a special question...</p>
+        <p>Catch enough hearts to reveal a special question... 🎵</p>
         <button onClick={startGame} className="btn" id="start-btn">
-          Start Game
+          🎮 Start Game
         </button>
       </div>
 
