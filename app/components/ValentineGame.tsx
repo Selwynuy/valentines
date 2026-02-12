@@ -148,7 +148,6 @@ export default function ValentineGame() {
   const [showCountdown, setShowCountdown] = useState<boolean>(false);
   const [showSuggestionBox, setShowSuggestionBox] = useState<boolean>(false);
   const [suggestion, setSuggestion] = useState<string>('');
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const WIN_SCORE = 15;
 
@@ -222,28 +221,13 @@ export default function ValentineGame() {
   }, []);
 
   useEffect(() => {
-    // Try to play music on load (may be blocked by browser)
+    // Auto-play music on load
     if (audioRef.current) {
-      audioRef.current.play().then(() => {
-        setIsPlaying(true);
-      }).catch(() => {
-        // Autoplay blocked, user needs to click
-        setIsPlaying(false);
+      audioRef.current.play().catch(() => {
+        // Autoplay blocked by browser - will play after first user interaction
       });
     }
   }, []);
-
-  const toggleMusic = () => {
-    if (audioRef.current) {
-      if (isPlaying) {
-        audioRef.current.pause();
-        setIsPlaying(false);
-      } else {
-        audioRef.current.play();
-        setIsPlaying(true);
-      }
-    }
-  };
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -423,19 +407,9 @@ export default function ValentineGame() {
 
   return (
     <div id="game-container">
-      {/* Background Music - Replace music.mp3 with your Taylor Swift song */}
-      <audio ref={audioRef} loop>
-        <source src="/music.mp3" type="audio/mpeg" />
+      <audio ref={audioRef} loop autoPlay>
+        <source src="/You-and-I.mp3" type="audio/mpeg" />
       </audio>
-
-      {/* Music Control Button */}
-      <button 
-        className="music-toggle"
-        onClick={toggleMusic}
-        aria-label={isPlaying ? 'Pause music' : 'Play music'}
-      >
-        {isPlaying ? '🔊' : '🔇'}
-      </button>
 
       <canvas ref={canvasRef} id="gameCanvas" />
 
