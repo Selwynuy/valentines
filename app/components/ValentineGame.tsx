@@ -391,8 +391,29 @@ export default function ValentineGame() {
     setOpenEnvelopeId(null);
   };
 
-  const handleSubmitPlan = () => {
+  const handleSubmitPlan = async () => {
     if (chosenPlanId) {
+      const chosenPlan = datePlans.find(p => p.id === chosenPlanId);
+      
+      // Save response to database
+      try {
+        await fetch('/api/save-response', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            accepted: true,
+            chosenPlanId: chosenPlanId,
+            chosenPlanTitle: chosenPlan?.title,
+            suggestions: suggestion || null,
+          }),
+        });
+      } catch (error) {
+        console.error('Failed to save response:', error);
+        // Continue anyway to show confirmation
+      }
+      
       setGameState('CONFIRMATION');
     }
   };
