@@ -12,7 +12,14 @@ interface DatePlan {
   date: string;
   time: string;
   location: string;
+  choices?: string[];
   note: string;
+  preMeetup?: {
+    date: string;
+    time: string;
+    location: string;
+    note: string;
+  };
 }
 
 class Player {
@@ -144,13 +151,19 @@ export default function ValentineGame() {
   const [openEnvelopeId, setOpenEnvelopeId] = useState<number | null>(null);
   const [hoveredEnvelopeId, setHoveredEnvelopeId] = useState<number | null>(null);
   const [chosenPlanId, setChosenPlanId] = useState<number | null>(null);
+  const [selectedMovieChoice, setSelectedMovieChoice] = useState<string>('');
+  const [movieMatch, setMovieMatch] = useState<boolean | null>(null);
   const [countdown, setCountdown] = useState<number>(4);
   const [showCountdown, setShowCountdown] = useState<boolean>(false);
   const [showSuggestionBox, setShowSuggestionBox] = useState<boolean>(false);
   const [suggestion, setSuggestion] = useState<string>('');
   const [musicStarted, setMusicStarted] = useState<boolean>(false);
+  const [teasingMessageIndex, setTeasingMessageIndex] = useState<number>(0);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const WIN_SCORE = 15;
+  
+  // Your secret movie choice! (Change this to your actual pick)
+  const MY_MOVIE_CHOICE = "Wuthering Heights";
 
   const datePlans: DatePlan[] = [
     {
@@ -158,27 +171,33 @@ export default function ValentineGame() {
       title: "Dinner Date",
       activity: "Romantic Dinner",
       date: "2026-02-14",
-      time: "7:00 PM",
-      location: "Your Favorite Restaurant",
-      note: "Let's enjoy a candlelit dinner together! Dress fancy! 💕"
+      time: "5:30 PM",
+      location: "Drip n’ Drive Cafe ",
+      note: "Let's control those cars together!💕"
     },
     {
       id: 2,
       title: "Movie Night",
       activity: "Cozy Movie Date",
-      date: "2026-02-15",
-      time: "8:00 PM",
-      location: "Home Sweet Home",
-      note: "Popcorn, blankets, and your favorite movies! 🍿"
-    },
+      date: "2026-02-14",
+      time: "5:30 PM",
+      location: "SM Cinema",
+      choices: ["The Loved One", "Wuthering Heights", "Goat", "The Strangers: Chapter 3"],
+      note: "Popcorn, blankets, and the movie of your choice! 🍿 Pick your favorite!"    },
     {
       id: 3,
       title: "Adventure Day",
       activity: "Surprise Adventure",
-      date: "2026-02-16",
+      date: "2026-02-15",
       time: "10:00 AM",
       location: "It's a Surprise!",
-      note: "Pack your bags for an exciting day out! 🎒✨"
+      note: "Pack your bags for an exciting day out! 🎒✨",
+      preMeetup: {
+        date: "2026-02-14",
+        time: "Anytime you're free!",
+        location: "Anywhere you want!",
+        note: "I'll be there to pick you up! 💕"
+      } 
     }
   ];
 
@@ -369,6 +388,9 @@ export default function ValentineGame() {
   const moveNoButton = (e: React.MouseEvent<HTMLButtonElement> | React.TouchEvent<HTMLButtonElement>) => {
     if (noClickCount < 5) return; // Only move after 5 clicks
     
+    // Change to next teasing message
+    setTeasingMessageIndex((prev) => prev + 1);
+    
     const button = e.currentTarget;
     const x = Math.random() * (window.innerWidth - button.offsetWidth);
     const y = Math.random() * (window.innerHeight - button.offsetHeight);
@@ -378,12 +400,66 @@ export default function ValentineGame() {
   };
 
   const getPersuasiveText = () => {
+    // After 5 clicks, show cycling teasing messages
+    if (noClickCount >= 5) {
+      const teasingMessages = [
+        "B?",
+        "Bro...",
+        "Babi!",
+        "Yes, Please!",
+        "No na talaga?",
+        "Ayaw mo talaga hahaha",
+        "PLeEassseeeeeeeeeeeeee!",
+        "I'm waiting bro",
+        "Last na to na 'no'...",
+        "You're not serious right?",
+        "pretty please?",
+        "my cutiepatootie crush",
+        "you're enjoying this right?",
+        "Aaaaaahhhhhhhhhhhhhhhhhhh!",
+        "I wanna call you babii again...",
+        "Okay last na to pagkatapos",
+        "Love you hehe",
+        "wahhhhhhhhh",
+        "there's a bird oh",
+        "there's a plane",
+        "11:11 ko to sinend haha",
+        "I put effort in this website to make it look nice for you",
+        "naabot ka talaga up to this point?",
+        "No talaga bro? HAHAHA",
+        "Okay I give up, you can click yes to exit this",
+        "wah, click mo na bebe kooo",
+        "oke",
+        "psst",
+        "story nalang hahaha",
+        "once upon a time",
+        "there was this girl who loved a boy",
+        "they grow old together",
+        "one day they got into a deep dispute",
+        "the girl felt misunderstood",
+        "the boy felt betrayed",
+        "but the boy understood the assignment",
+        "the boy make effort",
+        "the girl waited",
+        "the girl finally felt the boy's love",
+        "they lived happily ever after",
+        "the end",
+        "the boy was happy",
+        "the girl was happy",
+        "they were happy",
+        "yes na hahaha",
+        "okay back to the first one para mag yes kana hahaha",
+
+      ];
+      return teasingMessages[teasingMessageIndex % teasingMessages.length];
+    }
+    
     const messages = [
       "You caught my heart! Now I have to ask...",
-      "Are you sure? I caught all those hearts for you! 💕",
-      "Please reconsider... I put so much effort into this! 🥺",
+      "Are you sure? You caught all those hearts! 💕",
+      "Please reconsider... You worked so hard for this! 🥺",
       "Come on, you know you want to say yes! ❤️",
-      "Think about all the hearts we caught together! 💘",
+      "Think about all the hearts you caught! 💘",
       "Last chance to click NO... or just say YES! 😊",
     ];
     return messages[noClickCount] || messages[0];
@@ -394,6 +470,22 @@ export default function ValentineGame() {
   };
 
   const handleChoosePlan = (id: number) => {
+    const plan = datePlans.find(p => p.id === id);
+    
+    // If this plan has choices and none selected, don't allow choosing
+    if (plan?.choices && !selectedMovieChoice) {
+      return;
+    }
+    
+    // Check if selected movie matches your choice (only for Movie Night)
+    if (plan?.choices && selectedMovieChoice) {
+      setMovieMatch(selectedMovieChoice === MY_MOVIE_CHOICE);
+    } else {
+      // Reset movie selection if switching to a plan without choices
+      setMovieMatch(null);
+      setSelectedMovieChoice('');
+    }
+    
     setChosenPlanId(id);
     setOpenEnvelopeId(null);
   };
@@ -413,6 +505,7 @@ export default function ValentineGame() {
             accepted: true,
             chosenPlanId: chosenPlanId,
             chosenPlanTitle: chosenPlan?.title,
+            movieChoice: selectedMovieChoice || null,
             suggestions: suggestion || null,
           }),
         });
@@ -555,9 +648,53 @@ export default function ValentineGame() {
                     </div>
                   </div>
                   <p className="letter-note">{datePlans.find(p => p.id === openEnvelopeId)?.note}</p>
+                  
+                  {datePlans.find(p => p.id === openEnvelopeId)?.preMeetup && (
+                    <div className="pre-meetup-section">
+                      <h3 className="pre-meetup-title">✨ Plus... A Special Pre-Date! ✨</h3>
+                      <div className="pre-meetup-details">
+                        <div className="pre-meetup-row">
+                          <span className="pre-meetup-label">📅</span>
+                          <span>{new Date(datePlans.find(p => p.id === openEnvelopeId)?.preMeetup?.date || '').toLocaleDateString('en-US', { 
+                            weekday: 'long', 
+                            month: 'long', 
+                            day: 'numeric' 
+                          })}</span>
+                        </div>
+                        <div className="pre-meetup-row">
+                          <span className="pre-meetup-label">⏰</span>
+                          <span>{datePlans.find(p => p.id === openEnvelopeId)?.preMeetup?.time}</span>
+                        </div>
+                        <div className="pre-meetup-row">
+                          <span className="pre-meetup-label">📍</span>
+                          <span>{datePlans.find(p => p.id === openEnvelopeId)?.preMeetup?.location}</span>
+                        </div>
+                      </div>
+                      <p className="pre-meetup-note">{datePlans.find(p => p.id === openEnvelopeId)?.preMeetup?.note}</p>
+                    </div>
+                  )}
+                  
+                  {datePlans.find(p => p.id === openEnvelopeId)?.choices && (
+                    <div className="movie-choices">
+                      <h3 className="choices-title">🎬 Pick a Movie:</h3>
+                      <div className="choices-grid">
+                        {datePlans.find(p => p.id === openEnvelopeId)?.choices?.map((choice, index) => (
+                          <button
+                            key={index}
+                            className={`choice-btn ${selectedMovieChoice === choice ? 'selected' : ''}`}
+                            onClick={() => setSelectedMovieChoice(choice)}
+                          >
+                            {choice}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  
                   <button 
                     className="btn choose-btn"
                     onClick={() => handleChoosePlan(openEnvelopeId)}
+                    disabled={datePlans.find(p => p.id === openEnvelopeId)?.choices && !selectedMovieChoice}
                   >
                     {chosenPlanId === openEnvelopeId ? 'Plan Chosen! ✓' : 'Choose This Date'}
                   </button>
@@ -566,8 +703,22 @@ export default function ValentineGame() {
             </div>
           )}
 
-          {chosenPlanId !== null && (
+          {chosenPlanId !== null && openEnvelopeId === null && (
             <div className="planner-action-section">
+              {chosenPlanId === 2 && movieMatch === true && selectedMovieChoice && (
+                <div className="movie-match-message match">
+                  <span className="match-icon">🎉</span>
+                  <p>OMG! We picked the same movie! This is meant to be! 💕</p>
+                  <span className="match-icon">🎉</span>
+                </div>
+              )}
+              
+              {chosenPlanId === 2 && movieMatch === false && selectedMovieChoice && (
+                <div className="movie-match-message no-match">
+                  <p>Great choice! I'm excited to watch it with you! 🍿</p>
+                </div>
+              )}
+              
               {!showSuggestionBox && !suggestion && (
                 <button 
                   className="btn suggestion-btn"
@@ -687,6 +838,16 @@ export default function ValentineGame() {
                       <span className="detail-value">{datePlans.find(p => p.id === chosenPlanId)?.activity}</span>
                     </div>
                   </div>
+                  
+                  {chosenPlanId === 2 && selectedMovieChoice && (
+                    <div className="card-detail-item">
+                      <span className="card-icon">🎬</span>
+                      <div className="card-detail-text">
+                        <span className="detail-label-small">Movie</span>
+                        <span className="detail-value">{selectedMovieChoice}</span>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
               
@@ -694,6 +855,13 @@ export default function ValentineGame() {
                 <div className="card-note">
                   <p>{datePlans.find(p => p.id === chosenPlanId)?.note}</p>
                 </div>
+                
+                {chosenPlanId === 2 && movieMatch === true && selectedMovieChoice && (
+                  <div className="movie-match-confirmation match">
+                    <span className="match-icon">🎉</span>
+                    <p>We both picked the same movie! Perfect match! 💕</p>
+                  </div>
+                )}
                 
                 {suggestion && (
                   <div className="user-suggestion">

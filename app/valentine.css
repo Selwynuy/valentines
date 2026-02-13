@@ -162,6 +162,22 @@ p {
   transition: all 0.2s;
 }
 
+.no-btn:hover {
+  animation: wiggle 0.3s ease-in-out;
+}
+
+@keyframes wiggle {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-5deg);
+  }
+  75% {
+    transform: rotate(5deg);
+  }
+}
+
 @keyframes heartbeat {
   0% {
     transform: scale(1);
@@ -478,6 +494,148 @@ p {
   line-height: 1.6;
 }
 
+.movie-choices {
+  margin: 20px 0;
+}
+
+.choices-title {
+  font-family: var(--font-body);
+  font-size: 1.1rem;
+  color: var(--accent-color);
+  text-align: center;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+.choices-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.choice-btn {
+  padding: 12px 15px;
+  font-size: 0.9rem;
+  font-family: var(--font-body);
+  font-weight: 500;
+  border: 2px solid var(--secondary-color);
+  border-radius: 10px;
+  background: white;
+  color: var(--accent-color);
+  cursor: pointer;
+  transition: all 0.3s;
+  text-align: center;
+}
+
+.choice-btn:hover {
+  background: #fff0f3;
+  border-color: var(--primary-color);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(255, 77, 109, 0.2);
+}
+
+.choice-btn.selected {
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  color: white;
+  border-color: var(--accent-color);
+  box-shadow: 0 4px 15px rgba(201, 24, 74, 0.4);
+}
+
+.movie-match-message {
+  margin-top: 15px;
+  padding: 15px;
+  border-radius: 12px;
+  text-align: center;
+  animation: slideDown 0.5s ease-out;
+}
+
+.movie-match-message p {
+  margin: 0;
+  font-weight: 600;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.movie-match-message.match {
+  background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+  border: 2px solid #28a745;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  animation: matchCelebration 0.6s ease-out;
+}
+
+.movie-match-message.match p {
+  color: #155724;
+}
+
+.match-icon {
+  font-size: 1.5rem;
+  animation: bounce 0.8s infinite;
+}
+
+@keyframes matchCelebration {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.movie-match-message.no-match {
+  background: linear-gradient(135deg, #fff0f3 0%, #ffe5ec 100%);
+  border: 2px solid var(--secondary-color);
+}
+
+.movie-match-message.no-match p {
+  color: var(--accent-color);
+}
+
+.movie-match-confirmation {
+  margin-top: 15px;
+  padding: 12px 15px;
+  border-radius: 12px;
+  text-align: center;
+  animation: slideDown 0.5s ease-out;
+}
+
+.movie-match-confirmation.match {
+  background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+  border: 2px solid #28a745;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.movie-match-confirmation.match p {
+  color: #155724;
+  font-weight: 600;
+  font-size: 0.85rem;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.movie-match-confirmation .match-icon {
+  font-size: 1.2rem;
+}
+
 .choose-btn {
   width: 100%;
   margin-top: 20px;
@@ -487,8 +645,127 @@ p {
   padding: 15px 30px;
 }
 
-.choose-btn:hover {
+.choose-btn:hover:not(:disabled) {
   background: var(--accent-color);
+}
+
+.choose-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  opacity: 0.6;
+  box-shadow: none;
+}
+
+/* Pre-Meetup Section in Letter */
+.pre-meetup-section {
+  margin: 20px 0;
+  padding: 20px;
+  background: linear-gradient(135deg, #fff9e6 0%, #ffe5b3 100%);
+  border-radius: 12px;
+  border: 2px dashed #ffb703;
+}
+
+.pre-meetup-title {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: #d68300;
+  text-align: center;
+  margin-bottom: 15px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.pre-meetup-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.pre-meetup-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+  color: #8b5a00;
+}
+
+.pre-meetup-label {
+  font-size: 1rem;
+  min-width: 25px;
+}
+
+.pre-meetup-note {
+  margin: 0;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-style: italic;
+  color: #8b5a00;
+  text-align: center;
+  font-weight: 600;
+}
+
+/* Pre-Meetup Card in Confirmation */
+.pre-meetup-card {
+  margin-top: 20px;
+  padding: 18px;
+  background: linear-gradient(135deg, #fff9e6 0%, #ffe5b3 100%);
+  border-radius: 15px;
+  border: 2px solid #ffb703;
+  animation: slideDown 0.5s ease-out;
+}
+
+.pre-meetup-card-header {
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.pre-meetup-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #ffb703, #fb8500);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.pre-meetup-card h3 {
+  font-family: var(--font-body);
+  font-size: 1.1rem;
+  color: #d68300;
+  margin: 8px 0 0 0;
+  font-weight: 700;
+}
+
+.pre-meetup-card-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pre-meetup-card-row {
+  font-size: 0.85rem;
+  color: #8b5a00;
+  font-weight: 600;
+}
+
+.pre-meetup-card-note {
+  margin: 12px 0 0 0;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-style: italic;
+  color: #8b5a00;
+  text-align: center;
+  font-weight: 600;
 }
 
 /* Planner Action Section */
@@ -926,6 +1203,18 @@ p {
   .user-suggestion-preview p {
     font-size: 0.85rem;
   }
+
+  .movie-match-confirmation {
+    padding: 10px 12px;
+  }
+
+  .movie-match-confirmation.match p {
+    font-size: 0.8rem;
+  }
+
+  .movie-match-confirmation .match-icon {
+    font-size: 1rem;
+  }
 }
 
 .hearts-decoration {
@@ -1008,7 +1297,6 @@ p {
   .card-details {
     gap: 10px;
   }
-}
 
   .action-buttons {
     flex-direction: column;
@@ -1073,5 +1361,64 @@ p {
 
   .letter-content h2 {
     font-size: 2rem;
+  }
+
+  .choices-title {
+    font-size: 1rem;
+  }
+
+  .choices-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .choice-btn {
+    font-size: 0.85rem;
+    padding: 10px 12px;
+  }
+
+  .movie-match-message {
+    padding: 12px;
+    margin-top: 12px;
+  }
+
+  .movie-match-message p {
+    font-size: 0.85rem;
+  }
+
+  .match-icon {
+    font-size: 1.2rem;
+  }
+
+  .pre-meetup-section {
+    padding: 15px;
+  }
+
+  .pre-meetup-title {
+    font-size: 0.9rem;
+  }
+
+  .pre-meetup-row {
+    font-size: 0.85rem;
+  }
+
+  .pre-meetup-note {
+    font-size: 0.85rem;
+  }
+
+  .pre-meetup-card {
+    padding: 15px;
+  }
+
+  .pre-meetup-card h3 {
+    font-size: 1rem;
+  }
+
+  .pre-meetup-card-row {
+    font-size: 0.8rem;
+  }
+
+  .pre-meetup-card-note {
+    font-size: 0.8rem;
   }
 }

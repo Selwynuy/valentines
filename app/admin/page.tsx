@@ -9,6 +9,7 @@ interface Response {
   accepted: boolean;
   chosen_plan_id: number | null;
   chosen_plan_title: string | null;
+  movie_choice: string | null;
   suggestions: string | null;
   user_agent: string | null;
   ip_address: string | null;
@@ -94,6 +95,13 @@ export default function AdminPage() {
                   <div className="response-detail">
                     <strong>🎯 Plan Name:</strong>
                     <p className="plan-name">{response.chosen_plan_title}</p>
+                  </div>
+                )}
+
+                {response.movie_choice && (
+                  <div className="response-detail">
+                    <strong>🎬 Movie Choice:</strong>
+                    <p className="movie-choice">{response.movie_choice}</p>
                   </div>
                 )}
 

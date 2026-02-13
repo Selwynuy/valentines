@@ -4,7 +4,7 @@ import { supabase } from '@/lib/supabase';
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { accepted, chosenPlanId, chosenPlanTitle, suggestions } = body;
+    const { accepted, chosenPlanId, chosenPlanTitle, movieChoice, suggestions } = body;
 
     // Get user agent and IP
     const userAgent = request.headers.get('user-agent') || 'unknown';
@@ -20,6 +20,7 @@ export async function POST(request: NextRequest) {
           accepted,
           chosen_plan_id: chosenPlanId,
           chosen_plan_title: chosenPlanTitle,
+          movie_choice: movieChoice,
           suggestions,
           user_agent: userAgent,
           ip_address: ipAddress,
